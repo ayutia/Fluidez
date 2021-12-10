@@ -147,5 +147,13 @@ namespace Pronunciacion
             }
         }
 
+        public List<string> GetLineaLimpia(string linea)
+        {
+            string[] delimitadores = { " ", ",", ".", ":", ";", "-", "—", "¿", "?", "¡", "!", "\t", "\r\n" };
+            string[] palabrasEnLinea = linea.Split(delimitadores, System.StringSplitOptions.RemoveEmptyEntries);
+            List<string> _linea = new List<string>(palabrasEnLinea);
+            return _linea;
+        }
+
     }
 }

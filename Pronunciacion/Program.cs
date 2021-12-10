@@ -11,19 +11,18 @@ namespace Pronunciacion
         static void Main(string[] args)
         {
             // Console.WriteLine(File.Exists(@"..\..\..\data\1.txt"));
-            string palabra = "israel";
-            int contador = 0;
-            string[] arreglo = { "rr", "lr", "sr", "nr" };
-            List<string> lexemas = new List<string>(arreglo);
-            if (palabra.StartsWith("r") || palabra.StartsWith("R"))
+            Texto texto = new Texto(@"..\..\..\data\1.txt");
+            foreach (var linea in texto.GetTextoLineas())
             {
-                contador = 1;
+                foreach (var limpia in texto.GetLineaLimpia(linea))
+                {
+                    Console.Write(limpia + " ");
+                }
+                Console.WriteLine(texto.GetLineaLimpia(linea).Count);
+                // Console.WriteLine(linea.Length);
             }
-            foreach (var lex in lexemas)
-            {
-                contador += Regex.Matches(palabra, lex, RegexOptions.IgnoreCase).Count;
-            }
-            Console.WriteLine(contador);
+            SSML.TextoHablar("ELLA ME PIDE A GRITO QUE YO LA CHAMBEE","-0.50");
+            //SSML.LimpiarSSML();
         }
     }
 }
