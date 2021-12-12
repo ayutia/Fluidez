@@ -9,15 +9,23 @@ namespace Pronunciacion.SistemaExperto
         // las iniciare aqui aver
         List<Regla> _reglas = new List<Regla>();
         MemoriaTrabajo _memoria = new MemoriaTrabajo();
+        List<string> _pensamiento = new List<string>();
 
         public MotorInferencia()
         {
-            
+            Console.WriteLine("entre motor constri");
+            Conocimiento conocimientoAdquirido = new Conocimiento();
+            AddRegla(conocimientoAdquirido.GetConocimiento());
         }
 
         public void AddRegla(Regla regla)
         {
             _reglas.Add(regla);
+        }
+
+        public void AddRegla(List<Regla> reglas)
+        {
+            _reglas.AddRange(reglas);
         }
 
         public void AddMemoriaTrabajo(MemoriaTrabajo memoria)
@@ -70,6 +78,7 @@ namespace Pronunciacion.SistemaExperto
                                     // retornar su clausula
                                     _memoria.AddHecho(regla.GetConsecuente());
                                     regla.Disparar();
+                                    _pensamiento.Add(regla.ToString());
                                     return regla.GetConsecuente();
                                 }
                                 // Añadir la regla a las posibles
@@ -97,6 +106,7 @@ namespace Pronunciacion.SistemaExperto
                         return reglaSeleccionada.GetConsecuente();
                     }
                     reglaSeleccionada.Disparar();
+                    _pensamiento.Add(reglaSeleccionada.ToString());
                     _memoria.AddHecho(reglaSeleccionada.GetConsecuente());
                     huboDisparo = true;
                     candidatas.Clear();
@@ -104,6 +114,7 @@ namespace Pronunciacion.SistemaExperto
             }
             conclusion = reglaSeleccionada.GetConsecuente();
             // poner como conclu la regla con mayor prioridad.
+            Console.WriteLine("");
             return conclusion;
         }
 
@@ -146,5 +157,14 @@ namespace Pronunciacion.SistemaExperto
             return auxRegla;
         }
 
+        public List<string> GetRazonamiento()
+        {
+            return _pensamiento;
+        }
+
+        public List<Regla> GetReglas()
+        {
+            return _reglas;
+        }
     }
 }

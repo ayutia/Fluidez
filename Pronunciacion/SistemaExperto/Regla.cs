@@ -83,5 +83,16 @@ namespace Pronunciacion.SistemaExperto
             _indiceAntecedente++;
             return clausula;
         }
+
+        public override string ToString()
+        {
+            string concatenacionAntecedentes = "[ ";
+            foreach(var antecedentes in _antecedentes)
+            {
+                concatenacionAntecedentes += "(" +antecedentes.ToString() + ") ";
+            }
+            concatenacionAntecedentes += " ]";
+            return _nombre + ":  IF " + concatenacionAntecedentes + "THEN " + _consecuente.ToString();
+        }
     }
 }

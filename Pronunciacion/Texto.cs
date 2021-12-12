@@ -45,6 +45,14 @@ namespace Pronunciacion
             return textoEnLineas;
         }
 
+        public List<string> GetTextoLineasLimpio()
+        {
+            List<string> copia = textoEnLineas.ToList();
+            copia.RemoveAt(0);
+            copia.RemoveAll(vacias => vacias == "\r\n");
+            return copia;
+        }
+
         public List<string> GetTextoPalabras()
         {
             return textoEnPalabras;
@@ -76,15 +84,15 @@ namespace Pronunciacion
                 }
                 if (rr >= r && rr>= l)
                 {
-                    AgregarModo(_modos,palabra,"VibranteDoble");
+                    AgregarModo(_modos,palabra,"vibranteDoble");
                 }
                 else if (r >= l)
                 {
-                    AgregarModo(_modos,palabra,"VibranteSimple");
+                    AgregarModo(_modos,palabra,"vibranteSimple");
                 }
                 else
                 {
-                    AgregarModo(_modos,palabra,"Lateral");
+                    AgregarModo(_modos,palabra,"lateral");
                 }
             }
             return _modos;
@@ -155,5 +163,9 @@ namespace Pronunciacion
             return _linea;
         }
 
+        public string ObtenerModoPalabra(string palabraClave)
+        {
+            return modosArticulatorios.GetValueOrDefault(palabraClave);
+        }
     }
 }
