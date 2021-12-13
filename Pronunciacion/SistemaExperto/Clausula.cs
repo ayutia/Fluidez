@@ -4,7 +4,6 @@ using System.Text;
 
 namespace Pronunciacion.SistemaExperto
 {
-    // Ya Sebastian, vamooos
     public class Clausula
     {
         private string _variable;

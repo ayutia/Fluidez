@@ -7,37 +7,31 @@ namespace Pronunciacion.SistemaExperto
 {
     public class Experto
     {
-        MotorInferencia motor = new MotorInferencia();
-        MemoriaTrabajo memoriaTrabajo = new MemoriaTrabajo();
+        MotorInferencia _motor = new MotorInferencia();
+        MemoriaTrabajo _memoria = new MemoriaTrabajo();
 
         public Experto()
         {
-
         }
 
-        // añadir aca la memoria de trabajo y pasarsela al motor
         public void InicializarMemoria(List<string> modosCorregidos)
         {
             List<string> corregidoSinDuplicados = modosCorregidos.Distinct().ToList();
             foreach (var modo in corregidoSinDuplicados)
             {
-                //Console.WriteLine("entre");
-                memoriaTrabajo.AddHecho(new Clausula(modo, "corregir"));
+                _memoria.AddHecho(new Clausula(modo, "corregir"));
             }
-            motor.AddMemoriaTrabajo(memoriaTrabajo);
+            _motor.AddMemoriaTrabajo(_memoria);
         }
 
         public string GetInferencia()
         {
-            //Console.WriteLine(memoriaTrabajo.GetHechos().Count());
-            //Console.WriteLine(motor.GetReglas().Count());
-            //return motor.ForwardChaining().GetValor();
-            return motor.ForwardChaining().ToString();
+            return _motor.ForwardChaining().ToString();
         }
 
         public List<string> GetPensamiento()
         {
-            return motor.GetRazonamiento();
+            return _motor.GetRazonamiento();
         }
     }
 }

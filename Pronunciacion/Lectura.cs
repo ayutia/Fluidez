@@ -7,11 +7,9 @@ using Microsoft.CognitiveServices.Speech;
 
 namespace Pronunciacion
 {
-    // En esta clase, debo recibir el modo afectado, cargar los libros que tengo
-    // e iniciar la lectura.
     public class Lectura
     {
-        Texto texto;
+        Texto _texto;
         string _modo = "";
         string _libro = "";
         List<string> palabrasCorregir = new List<string>();
@@ -19,7 +17,6 @@ namespace Pronunciacion
 
         public Lectura(string modo)
         {
-            // Crear una función para cargar la biblioteca.
             Console.WriteLine("Indice el texto que desea leer");
             Console.WriteLine("1) Lagrimas de Luz");
             Console.WriteLine("2) Los cinco pollitos");
@@ -37,7 +34,7 @@ namespace Pronunciacion
                     _libro = @"..\..\..\data\3.txt";
                     break;
             }
-            texto = new Texto(_libro);
+            _texto = new Texto(_libro);
             _modo = modo;
             palabrasCorregir = SetPalabrasCorregir();
         }
@@ -48,14 +45,14 @@ namespace Pronunciacion
             switch (_modo)
             {
                 case "liquida":
-                    foreach (var item in texto.GetModos())
+                    foreach (var item in _texto.GetModos())
                     {
                         palabras.Add(item.Key.ToLower());
                     }
                     break;
 
                 case "vibrante":
-                    foreach (var item in texto.GetModos())
+                    foreach (var item in _texto.GetModos())
                     {
                         if (item.Value == "vibranteSimple" || item.Value == "vibranteDoble")
                         {
@@ -65,7 +62,7 @@ namespace Pronunciacion
                     break;
 
                 case "vibranteDoble":
-                    foreach (var item in texto.GetModos())
+                    foreach (var item in _texto.GetModos())
                     {
                         if (item.Value == "vibranteDoble")
                         {
@@ -75,7 +72,7 @@ namespace Pronunciacion
                     break;
 
                 case "vibranteSimple":
-                    foreach (var item in texto.GetModos())
+                    foreach (var item in _texto.GetModos())
                     {
                         if (item.Value == "vibranteSimple")
                         {
@@ -85,7 +82,7 @@ namespace Pronunciacion
                     break;
 
                 case "lateral":
-                    foreach (var item in texto.GetModos())
+                    foreach (var item in _texto.GetModos())
                     {
                         if (item.Value == "lateral")
                         {
@@ -97,12 +94,10 @@ namespace Pronunciacion
             return palabras;
         }
 
-        // Aca el iniciarLectura
         public async Task<List<string>> IniciarLectura()
         {
-            foreach (var lineas in texto.GetTextoLineasLimpio())
+            foreach (var lineas in _texto.GetTextoLineasLimpio())
             {
-                //Meter la linea al SSML
                 await SSML.LimpiarSSMLAsync();
                 await SSML.TextoHablarAsync(lineas);
                 await LeerLineasAsync();
@@ -112,7 +107,7 @@ namespace Pronunciacion
                 await LeerLineasAsync();
                 // cada palabra de la linea
                 await SSML.LimpiarSSMLAsync();
-                foreach (var palabra in texto.GetLineaLimpia(lineas))
+                foreach (var palabra in _texto.GetLineaLimpia(lineas))
                 {
                     Console.Write(palabra + " ");
                     var decision = await VerCorregir(palabra, palabrasCorregir);
@@ -130,7 +125,7 @@ namespace Pronunciacion
                         {
                             await SSML.Corregir(palabra, "-50");
                             await LeerLineasAsync();
-                            correcciones.Add(texto.ObtenerModoPalabra(palabra));
+                            correcciones.Add(_texto.ObtenerModoPalabra(palabra));
                             await SSML.LimpiarSSMLAsync();
                         }
                     }

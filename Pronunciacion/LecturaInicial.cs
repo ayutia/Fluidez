@@ -7,10 +7,8 @@ using System.IO;
 
 namespace Pronunciacion
 {
-    // LETS GO CHAMP
     public class LecturaInicial
     {
-        //Requiero iniciar texto
         Texto texto = new Texto(@"..\..\..\data\inicial.txt");
         List<string> correcciones = new List<string>();
 
@@ -23,7 +21,6 @@ namespace Pronunciacion
         {
             foreach (var lineas in texto.GetTextoLineasLimpio())
             {
-                //Meter la linea al SSML
                 await SSML.LimpiarSSMLAsync();
                 await SSML.TextoHablarAsync(lineas);
                 await LeerLineasAsync();

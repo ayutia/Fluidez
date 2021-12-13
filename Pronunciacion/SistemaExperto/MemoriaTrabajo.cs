@@ -6,32 +6,31 @@ namespace Pronunciacion.SistemaExperto
 {
     public class MemoriaTrabajo
     {
-        List<Clausula> hechos = new List<Clausula>();
+        List<Clausula> _hechos = new List<Clausula>();
 
         public MemoriaTrabajo()
         {
-            
         }
 
         public void AddHecho(Clausula hecho)
         {
-            hechos.Add(hecho);
+            _hechos.Add(hecho);
         }
         
         public List<Clausula>  GetHechos()
         {
-            return hechos;
+            return _hechos;
         }
 
         public void ClearHechos()
         {
-            hechos.Clear();
+            _hechos.Clear();
         }
 
         public bool BuscarHecho(Clausula antecedente )
         {
             bool encontrado = false;
-            foreach (var clausula in hechos)
+            foreach (var clausula in _hechos)
             {
                 if (clausula.GetVariable() == antecedente.GetVariable() && clausula.GetValor() == antecedente.GetValor())
                 {
