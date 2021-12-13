@@ -167,5 +167,10 @@ namespace Pronunciacion
         {
             return modosArticulatorios.GetValueOrDefault(palabraClave);
         }
+
+        public Dictionary<string,string> GetModos()
+        {
+            return modosArticulatorios;
+        }
     }
 }

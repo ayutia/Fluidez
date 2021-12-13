@@ -71,7 +71,13 @@ namespace Pronunciacion
             }
             MotorInferencia motomoto = new MotorInferencia();
             motomoto.AddMemoriaTrabajo(memoria);
-            Console.WriteLine(motomoto.ForwardChaining().ToString());
+            string correccion = "";
+            correccion = motomoto.ForwardChaining().ToString();
+            Console.WriteLine(correccion);
+
+            Lectura lecturaNormal = new Lectura(correccion);
+            correciones.Clear();
+            correciones = await lecturaNormal.IniciarLectura();
             //Experto experto = new Experto();
             //List<string> correciones = new List<string>();
             //correciones.Add("vibranteSimple");
@@ -79,6 +85,8 @@ namespace Pronunciacion
             //Console.WriteLine(experto.GetInferencia());
             //await LeerLineasAsync();
             //await SynthesizeAudioAsync();
+
+
 
         }
 
