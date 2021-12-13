@@ -56,16 +56,20 @@ namespace Pronunciacion
                     switch (opcionTexto)
                     {
                         case "1":
-                            rutaTexto = @"..\..\..\data\1.txt";
+                            //rutaTexto = @"..\..\..\data\1.txt";
+                            rutaTexto = "1.txt";
                             break;
                         case "2":
-                            rutaTexto = @"..\..\..\data\2.txt";
+                            //rutaTexto = @"..\..\..\data\2.txt";
+                            rutaTexto = "2.txt";
                             break;
                         case "3":
-                            rutaTexto = @"..\..\..\data\3.txt";
+                            //rutaTexto = @"..\..\..\data\3.txt";
+                            rutaTexto = "3.txt";
                             break;
                         case "4":
-                            rutaTexto = @"..\..\..\data\inicial.txt";
+                            //rutaTexto = @"..\..\..\data\inicial.txt";
+                            rutaTexto = "inicial.txt";
                             break;
                     }
                     lectura = new Lectura(correccion, rutaTexto);

@@ -9,7 +9,8 @@ namespace Pronunciacion
 {
     public class LecturaInicial
     {
-        Texto texto = new Texto(@"..\..\..\data\inicial.txt");
+        //Texto texto = new Texto(@"..\..\..\data\inicial.txt");
+        Texto texto = new Texto("inicial.txt");
         List<string> correcciones = new List<string>();
 
         public LecturaInicial()
@@ -89,7 +90,8 @@ namespace Pronunciacion
         {
             var config = SpeechConfig.FromSubscription("2e5647a940d94ce78f41c046c24ddf4b", "brazilsouth");
             using var sintetizador = new SpeechSynthesizer(config);
-            var ssml = File.ReadAllText(@"..\..\..\data\ssml.xml");
+            //var ssml = File.ReadAllText(@"..\..\..\data\ssml.xml");
+            var ssml = File.ReadAllText("ssml.xml");
             await sintetizador.SpeakSsmlAsync(ssml);
         }
 
