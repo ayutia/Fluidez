@@ -10,88 +10,24 @@ namespace Pronunciacion
     public class Lectura
     {
         Texto _texto;
-        string _modo = "";
-        string _libro = "";
         List<string> palabrasCorregir = new List<string>();
         List<string> correcciones = new List<string>();
 
-        public Lectura(string modo)
+        public Lectura(string modoArticulatorio, string rutaTexto)
         {
-            Console.WriteLine("Indice el texto que desea leer");
-            Console.WriteLine("1) Lagrimas de Luz");
-            Console.WriteLine("2) Los cinco pollitos");
-            Console.WriteLine("3) Kuyen y el arbol de la amistad");
-            string opcion = Console.ReadLine();
-            switch (opcion)
-            {
-                case "1":
-                    _libro = @"..\..\..\data\1.txt";
-                    break;
-                case "2":
-                    _libro = @"..\..\..\data\2.txt";
-                    break;
-                case "3":
-                    _libro = @"..\..\..\data\3.txt";
-                    break;
-            }
-            _texto = new Texto(_libro);
-            _modo = modo;
-            palabrasCorregir = SetPalabrasCorregir();
+            
+            _texto = new Texto(rutaTexto);
+            SetPalabrasCorregir(modoArticulatorio);
         }
 
-        public List<string> SetPalabrasCorregir()
+        public Texto GetTexto()
         {
-            List<string> palabras = new List<string>();
-            switch (_modo)
-            {
-                case "liquida":
-                    foreach (var item in _texto.GetModos())
-                    {
-                        palabras.Add(item.Key.ToLower());
-                    }
-                    break;
+            return _texto;
+        }
 
-                case "vibrante":
-                    foreach (var item in _texto.GetModos())
-                    {
-                        if (item.Value == "vibranteSimple" || item.Value == "vibranteDoble")
-                        {
-                            palabras.Add(item.Key.ToLower());
-                        }
-                    }
-                    break;
-
-                case "vibranteDoble":
-                    foreach (var item in _texto.GetModos())
-                    {
-                        if (item.Value == "vibranteDoble")
-                        {
-                            palabras.Add(item.Key.ToLower());
-                        }
-                    }
-                    break;
-
-                case "vibranteSimple":
-                    foreach (var item in _texto.GetModos())
-                    {
-                        if (item.Value == "vibranteSimple")
-                        {
-                            palabras.Add(item.Key.ToLower()) ;
-                        }
-                    }
-                    break;
-
-                case "lateral":
-                    foreach (var item in _texto.GetModos())
-                    {
-                        if (item.Value == "lateral")
-                        {
-                            palabras.Add(item.Key);
-                        }
-                    }
-                    break;
-            }
-            return palabras;
+        public void SetPalabrasCorregir(string modoArticulatorio)
+        {
+            palabrasCorregir = _texto.GetPalabrasCorregir(modoArticulatorio);
         }
 
         public async Task<List<string>> IniciarLectura()
@@ -109,26 +45,23 @@ namespace Pronunciacion
                 await SSML.LimpiarSSMLAsync();
                 foreach (var palabra in _texto.GetLineaLimpia(lineas))
                 {
-                    Console.Write(palabra + " ");
-                    var decision = await VerCorregir(palabra, palabrasCorregir);
-                    if (decision)
+                    if (palabrasCorregir.Contains(palabra))
                     {
-                        Console.WriteLine("entre");
-                        await SSML.Corregir(palabra, "-50");
+                        await SSML.Corregir(palabra, "0");
                         await LeerLineasAsync();
                         await SSML.LimpiarSSMLAsync();
                     }
-                    else
+                    Console.Write(palabra + " ");
+                   
+                    var resultado = await SpeechSingleShotRecognitionAsync();
+                    if (palabra.ToLower() != resultado)
                     {
-                        var resultado = await SpeechSingleShotRecognitionAsync();
-                        if (palabra.ToLower() != resultado)
-                        {
-                            await SSML.Corregir(palabra, "-50");
-                            await LeerLineasAsync();
-                            correcciones.Add(_texto.ObtenerModoPalabra(palabra));
-                            await SSML.LimpiarSSMLAsync();
-                        }
+                        await SSML.Corregir(palabra, "-50");
+                        await LeerLineasAsync();
+                        correcciones.Add(_texto.ObtenerModoPalabra(palabra));
+                        await SSML.LimpiarSSMLAsync();
                     }
+                   
                     
                 }
                 Console.WriteLine();
@@ -137,10 +70,6 @@ namespace Pronunciacion
             return correcciones;
         }
 
-        public static async Task<bool> VerCorregir(string palabra, List<string> conflictivas)
-        {
-            return conflictivas.Contains(palabra);
-        }
 
         public static async Task<string> SpeechSingleShotRecognitionAsync()
         {

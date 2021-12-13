@@ -77,7 +77,7 @@ namespace Pronunciacion.SistemaExperto
                 if (candidatas.Count > 0)
                 {
                     reglaSeleccionada = GetReglaPrioritaria(candidatas);
-                    Console.WriteLine(reglaSeleccionada.GetConsecuente().ToString());
+                    //Console.WriteLine(reglaSeleccionada.GetConsecuente().ToString());
                     if (reglaSeleccionada.GetPrioridad() == 1)
                     {
                         return reglaSeleccionada.GetConsecuente();
