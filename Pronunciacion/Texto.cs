@@ -172,5 +172,57 @@ namespace Pronunciacion
         {
             return modosArticulatorios;
         }
+
+        public List<string> GetPalabrasCorregir(string modo)
+        {
+            List<string> palabrasCorregir = new List<string>();
+            switch (modo)
+            {
+                case "liquida":
+                    foreach (var item in modosArticulatorios)
+                    {
+                        palabrasCorregir.Add(item.Key);
+                    }
+                    break;
+                case "vibrante":
+                    foreach (var item in modosArticulatorios)
+                    {
+                        if(item.Value == "vibranteSimple"|| item.Value == "vibranteDoble")
+                        {
+                            palabrasCorregir.Add(item.Key);
+                        }
+                    }
+                    break;
+                case "vibranteSimple":
+                    foreach (var item in modosArticulatorios)
+                    {
+                        if (item.Value == "vibranteSimple")
+                        {
+                            palabrasCorregir.Add(item.Key);
+                        }
+                    }
+                    break;
+                case "vibranteDoble":
+                    foreach (var item in modosArticulatorios)
+                    {
+                        if (item.Value == "vibranteDoble")
+                        {
+                            palabrasCorregir.Add(item.Key);
+                        }
+                    }
+                    break;
+                case "lateral":
+                    foreach (var item in modosArticulatorios)
+                    {
+                        if (item.Value == "lateral")
+                        {
+                            palabrasCorregir.Add(item.Key);
+                        }
+                    }
+                    break;
+            }
+            
+            return palabrasCorregir;
+        }
     }
 }

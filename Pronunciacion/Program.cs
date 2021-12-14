@@ -14,80 +14,76 @@ namespace Pronunciacion
     {
         static async Task Main(string[] args)
         {
-            // PRUEBAS TEXTO
-            //Texto texto = new Texto(@"..\..\..\data\1.txt");
-            //foreach (var linea in texto.GetTextoLineas())
-            //{
-            //    foreach (var limpia in texto.GetLineaLimpia(linea))
-            //    {
-            //        Console.Write(limpia + " ");
-            //    }
-            //    Console.WriteLine(texto.GetLineaLimpia(linea).Count);
-            // Console.WriteLine(linea.Length);
-            // }
-            // SSML.TextoHablar("ELLA ME PIDE A GRITO QUE YO LA CHAMBEE","-0.50");
-            //SSML.LimpiarSSML();
-
-            // Memoria trabajo a ver
+            Console.WriteLine("Para empezar, presione enter");
+            Console.ReadLine();
             MemoriaTrabajo memoria = new MemoriaTrabajo();
-            //memoria.AddHecho(new Clausula("palabraCorregida", "vibranteDoble"));
-            //memoria.AddHecho(new Clausula("palabraCorregida", "vibranteSimple"));
-            //memoria.AddHecho(new Clausula("palabraCorregida", "lateral"));
-            //memoria.AddHecho(new Clausula("palabraCorregida", "vibranteDoble"));
-            //memoria.AddHecho(new Clausula("palabraCorregida", "lateral"));
-            //memoria.AddHecho(new Clausula("vibrante", "corregir"));
-            //memoria.AddHecho(new Clausula("lateral", "corregir"));
-
-
-            //probando Equals
-            //Console.WriteLine(memoria.BuscarHecho(new Clausula("palabraCorregida", "vibranteDoble")));
-
-            // Probando si funciona 10-12 17:52
-             //MotorInferencia motomoto = new MotorInferencia();
-             //motomoto.AddMemoriaTrabajo(memoria);
-
-            // A PROBARRRR
-            //Console.WriteLine(motomoto.ForwardChaining().ToString());
-            //foreach(var linea in motomoto.GetRazonamiento())
-            //{
-            //    Console.WriteLine(linea);
-            //}
-            
             LecturaInicial lecturaInicial = new LecturaInicial();
-            List<string> correciones = new List<string>();
-            correciones = await lecturaInicial.IniciarEvaluacion();
-            //Console.WriteLine(correciones.ToString());
-            //List<string> corregidoSinDuplicados = correciones.Distinct().ToList();
-            //foreach (var correccion in correciones)
-            //{
-            //    Console.WriteLine(correccion);
-            //}
-            correciones = correciones.Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().ToList();
-            //Console.WriteLine("ahora sin duplicados");
-
-            foreach (var hecho in correciones)
+            List<string> correcciones = new List<string>();
+            correcciones = await lecturaInicial.IniciarEvaluacion();
+            correcciones = correcciones.Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().ToList();
+            foreach (var hecho in correcciones)
             {
                 memoria.AddHecho(new Clausula("palabraCorregida", hecho));
             }
             MotorInferencia motomoto = new MotorInferencia();
             motomoto.AddMemoriaTrabajo(memoria);
             string correccion = "";
-            correccion = motomoto.ForwardChaining().ToString();
+            correccion = motomoto.ForwardChaining().GetVariable();
             Console.WriteLine(correccion);
-
-            Lectura lecturaNormal = new Lectura(correccion);
-            correciones.Clear();
-            correciones = await lecturaNormal.IniciarLectura();
-            //Experto experto = new Experto();
-            //List<string> correciones = new List<string>();
-            //correciones.Add("vibranteSimple");
-            //experto.InicializarMemoria(correciones);
-            //Console.WriteLine(experto.GetInferencia());
-            //await LeerLineasAsync();
-            //await SynthesizeAudioAsync();
+            // Lectura lecturaNormal = new Lectura(correccion);
+            correcciones.Clear();
+            //correciones = await lecturaNormal.IniciarLectura();
 
 
+            //Parte Luego de Leer
+            Console.WriteLine("¿Desea Continuar? Si\tNo");
+            var opcionContinuar = Console.ReadLine();
+            string rutaTexto = "";
+            //correccion sera de ejemplo aca
+            // string correccion = "vibranteSimple"; el de ejemplo
+            Lectura lectura;
+            switch (opcionContinuar)
+            {
+                case "Si": case "si": case "s":case "SI":
+                    //Segunda lectura
+                    Console.WriteLine("");
+                    Console.WriteLine("Indice el texto que desea leer");
+                    Console.WriteLine("1) Lagrimas de Luz");
+                    Console.WriteLine("2) Los cinco pollitos");
+                    Console.WriteLine("3) Kuyen y el arbol de la amistad");
+                    Console.WriteLine("");
+                    string opcionTexto = Console.ReadLine();
+                    switch (opcionTexto)
+                    {
+                        case "1":
+                            //rutaTexto = @"..\..\..\data\1.txt";
+                            rutaTexto = "1.txt";
+                            break;
+                        case "2":
+                            //rutaTexto = @"..\..\..\data\2.txt";
+                            rutaTexto = "2.txt";
+                            break;
+                        case "3":
+                            //rutaTexto = @"..\..\..\data\3.txt";
+                            rutaTexto = "3.txt";
+                            break;
+                        case "4":
+                            //rutaTexto = @"..\..\..\data\inicial.txt";
+                            rutaTexto = "inicial.txt";
+                            break;
+                    }
+                    lectura = new Lectura(correccion, rutaTexto);
+                    //Foreach para probar una teoria
+                    foreach(var item in lectura.GetTexto().GetPalabrasCorregir(correccion))
+                    {
+                        Console.WriteLine(item);
+                    }
+                    // De ejemplo el foreach
+                    correcciones = await lectura.IniciarLectura();
 
+                    break;
+
+            }
         }
 
     }

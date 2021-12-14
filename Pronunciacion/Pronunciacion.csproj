@@ -6,6 +6,48 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="1.txt" />
+    <None Remove="2.txt" />
+    <None Remove="3.txt" />
+    <None Remove="data\1.txt" />
+    <None Remove="data\2.txt" />
+    <None Remove="data\3.txt" />
+    <None Remove="data\inicial.txt" />
+    <None Remove="data\ssml.xml" />
+    <None Remove="data\ssml1.xml" />
+    <None Remove="inicial.txt" />
+    <None Remove="ssml.xml" />
+    <None Remove="ssml1.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="3.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\1.txt" />
+    <Content Include="data\2.txt" />
+    <Content Include="data\3.txt" />
+    <Content Include="data\inicial.txt" />
+    <Content Include="data\ssml.xml" />
+    <Content Include="data\ssml1.xml" />
+    <Content Include="inicial.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ssml.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ssml1.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.19.0" />
   </ItemGroup>
 
